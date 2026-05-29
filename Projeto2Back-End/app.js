@@ -14,10 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: 'seu-segredo-super-secreto-aqui', // MUDE ISSO EM PRODUÇÃO!
+    secret: 'projeto-ecommerce',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 3600000 } // Exemplo: sessão dura 1 hora
+    cookie: { maxAge: 3600000 }
   })
 );
 
@@ -36,7 +36,7 @@ function ensureSellerLogged(req, res, next) {
 }
 
 app.get('/', (req, res) => {
-  res.json({ message: 'API do Meu Projeto funcionando! 🚀' });
+  res.json({ message: 'API do Projeto funcionando' });
 });
 
 // ---------------- ROTAS DE USUÁRIOS ---------------------
