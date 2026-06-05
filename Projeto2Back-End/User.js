@@ -11,23 +11,23 @@ class User {
 
     authenticate (){
         if( !this.name || !this.cpf || !this.email ) {
-            throw new Error("All fields must be filled out");
+            throw new Error("Todos os campos devem ser preenchidos");
         }
 
         if ( !/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(this.name )) {
-            throw new Error("The name can only have letters");
+            throw new Error("O nome só pode conter letras");
         }
 
         if ( !/^[0-9X]{11}$/.test(this.cpf) ) {
-            throw new Error("Invalid CPF");
+            throw new Error("CPF Inválido");
         }
 
         if ( !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email) ) {
-            throw new Error("Invalid Email");
+            throw new Error("Email Inválido");
         }
 
         if ( !this.password || this.password.length < 4 ) {
-            throw new Error("Password must contain at least 4 characters");
+            throw new Error("A senha precisa ter pelo menos 4 caracteres");
         }
     }
 
@@ -40,7 +40,7 @@ class User {
 
             const usedCpf = await collection.findOne({ cpf: this.cpf });
             if (usedCpf){
-                throw new Error("CPF is already in use")
+                throw new Error("CPF já em uso")
             }
 
             const result = await collection.insertOne({
@@ -51,7 +51,7 @@ class User {
             });
             
             const newUser = await collection.findOne({ _id: result.insertedId });
-            console.log("Registration completed: ", newUser);
+            console.log("Registro completo: ", newUser);
 
         } catch (error){
             User.logError(error);
@@ -64,7 +64,7 @@ class User {
             const db = await connectDB();
             const collection = db.collection("users");
             const user = await collection.findOne({ cpf });
-            console.log("User found: ", user);
+            console.log("Usuário encontrado: ", user);
             return user;
         } catch (error) {
             User.logError(error);
@@ -78,13 +78,13 @@ class User {
             const user = await collection.deleteOne({ cpf });
 
             if ( user.deletedCount > 0 ) {
-                console.log("User deleted succesfuly");
+                console.log("Usuário deletado com sucesso");
             } else {
-                console.log("User not found");
+                console.log("Usuário não encontrado");
             } 
 
             const allUsers = await collection.find({}).toArray();
-            console.log("Current users: ", allUsers)
+            console.log("Usuários atuais: ", allUsers)
 
         } catch (error) {
             User.logError(error);

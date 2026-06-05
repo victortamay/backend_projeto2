@@ -11,24 +11,24 @@ class Seller {
 
     authenticate () {
         if ( !this.name || !this.cnpj || !this.email || !this.password){
-            throw new Error("All fields must be filled out");
+            throw new Error("Todos os campos devem estar preenchidos");
         }
 
         if ( !/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(this.name) ){
-            throw new Error("The name can only have letters");
+            throw new Error("O nome só pode conter letras");
         }
 
         this.cnpj = this.cnpj.replace(/\D/g, "");
         if ( this.cnpj.length !== 14){
-            throw new Error ("Invalid CNPJ");
+            throw new Error ("CNPJ Inválido");
         }
 
         if ( !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email) ){
-            throw new Error("Invalid Email")
+            throw new Error("Email Inválido")
         }
 
         if ( !this.password || this.password.length < 4 ){
-            throw new Error("Password must contain at least 4 characters");
+            throw new Error("A senha precisa ter pelo menos 4 caracteres");
         }
     }
 
@@ -45,8 +45,13 @@ class Seller {
                 password: this.password,
             });
 
+            const usedCnpj = await collection.findOne({ cnpj: this.cnpj });
+            if (usedCnpj){
+                throw new Error("CNPJ já em uso")
+            }
+
             const newSeller = await collection.findOne({ _id: result.insertedId });
-            console.log("Registration completed: ", newSeller);
+            console.log("Registro completo: ", newSeller);
 
         } catch (error) {
             Seller.logError(error);
@@ -58,7 +63,7 @@ class Seller {
             const db = await connectDB();
             const collection = db.collection("sellers");
             const seller = await collection.findOne({cnpj});
-            console.log("Seller found: ", seller);
+            console.log("Vendedor encontrado: ", seller);
             return seller;
         } catch (error) {
             Seller.logError(error);
@@ -72,13 +77,13 @@ class Seller {
             const seller = await collection.deleteOne({cnpj});
 
             if ( seller.deletedCount > 0 ){
-                console.log("Seller deleted succesfuly");
+                console.log("Vendedor deletado com sucesso");
             } else {
-                console.log("Seller not found")
+                console.log("Vendedor não encontrado")
             }
 
             const allSellers = await collection.find({}).toArray();
-            console.log("Current sellers: ", allSellers);
+            console.log("Vendedores atuais: ", allSellers);
 
         } catch (error) {
             Seller.logError(error);

@@ -11,16 +11,16 @@ class Product {
 
     authenticate () {
         if ( !this.adTitle || !this.price || !this.description || !this.sellerCnpj ) {
-                throw new Error("All fields must be filled out")
+                throw new Error("Todos os campos devem estar preenchidos")
             }
 
         if ( typeof this.price !== "number" || isNaN(this.price) ) {
-            throw new Error("Price must be a number");
+            throw new Error("Preço precisa ser um número");
         }
 
         this.sellerCnpj = this.sellerCnpj.replace(/\D/g, "");
             if ( this.sellerCnpj.length !== 14 ){
-                throw new Error("Invalid CNPJ");
+                throw new Error("CNPJ Inválido");
             }
     }
 
@@ -33,7 +33,7 @@ class Product {
 
             const seller = await db.collection("sellers").findOne({ cnpj:this.sellerCnpj });
             if ( !seller ) {
-                throw new Error("Seller not found");
+                throw new Error("Vendedor não encontrado");
             }
 
             const result = await collection.insertOne({
@@ -44,7 +44,7 @@ class Product {
             });
 
             const newProduct = await collection.findOne({ _id: result.insertedId });
-            console.log("Product added: ", newProduct);
+            console.log("Produto adicionado: ", newProduct);
 
         } catch (error) {
             Product.logError(error);
@@ -70,13 +70,13 @@ class Product {
             const product = await colecao.deleteOne({ adTitle })
 
             if ( product.deletedCount > 0 ) {
-                console.log("Product succesfuly deleted");
+                console.log("Produto deletado com sucesso");
             } else {
-                console.log("Product not found, please check again");
+                console.log("Produto não encontrado");
             }
 
             const allProducts = await colecao.find({}).toArray();
-            console.log("Current products: ", allProducts);
+            console.log("Produtos atuais: ", allProducts);
 
         } catch (error) { 
             Product.logError(error);
