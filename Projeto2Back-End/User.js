@@ -56,6 +56,7 @@ class User {
         } catch (error){
             User.logError(error);
             console.error("Error: ", error.message)
+            throw error;
         }
     }
 
@@ -68,6 +69,7 @@ class User {
             return user;
         } catch (error) {
             User.logError(error);
+            throw error;
         }
     }
 
@@ -88,6 +90,7 @@ class User {
 
         } catch (error) {
             User.logError(error);
+            throw error;
         }
     }
 

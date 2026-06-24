@@ -48,6 +48,7 @@ class Product {
 
         } catch (error) {
             Product.logError(error);
+            throw error;
         }
     }
 
@@ -60,6 +61,7 @@ class Product {
             return product;
         } catch (error) {
             Product.logError(error);
+            throw error;
         }
     }
 
@@ -80,6 +82,7 @@ class Product {
 
         } catch (error) { 
             Product.logError(error);
+            throw error;
         }
     }
 

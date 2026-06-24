@@ -55,6 +55,7 @@ class Seller {
 
         } catch (error) {
             Seller.logError(error);
+            throw error;
         }
     }
 
@@ -67,6 +68,7 @@ class Seller {
             return seller;
         } catch (error) {
             Seller.logError(error);
+            throw error;
         }
     }
 
@@ -87,6 +89,7 @@ class Seller {
 
         } catch (error) {
             Seller.logError(error);
+            throw error;
         }
     }
 
